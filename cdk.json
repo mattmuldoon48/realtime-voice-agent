@@ -1,0 +1,8 @@
+{
+  "app": "uv run python -m realtime_voice_agent.deployment.app",
+  "context": {
+    "@aws-cdk/aws-ecs:removeDefaultDeploymentAlarm": true,
+    "@aws-cdk/aws-ecs:disableEcsImdsBlocking": false,
+    "@aws-cdk/aws-iam:minimizePolicies": true
+  }
+}

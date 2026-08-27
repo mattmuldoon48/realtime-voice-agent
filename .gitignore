@@ -1,0 +1,57 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+.envrc
+.aws/
+ngrok.yml
+*.pem
+*.key
+*.p12
+
+# Local reference documents
+AGENTS.md
+*.pdf
+
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Builds and packaging
+build/
+dist/
+*.egg-info/
+cdk.context.json
+cdk.out/
+
+# Runtime output and sensitive diagnostic media
+*.log
+logs/
+*.pcm
+*.raw
+*.ulaw
+*.mulaw
+*.wav
+*.au
+
+# Local databases and test artifacts
+*.db
+*.sqlite
+*.sqlite3
+.pytest_tmp/
+
+# Editors and operating systems
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo

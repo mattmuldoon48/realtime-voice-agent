@@ -7,7 +7,7 @@ from typing import Literal
 
 from realtime_voice_agent.audio.codecs import TWILIO_CHANNELS, TWILIO_ENCODING, TWILIO_SAMPLE_RATE
 
-TwilioEventName = Literal["connected", "start", "media", "mark", "stop"]
+TwilioEventName = Literal["connected", "start", "media", "dtmf", "mark", "stop"]
 
 
 class TwilioProtocolError(ValueError):
@@ -52,6 +52,14 @@ class MediaEvent:
 
 
 @dataclass(frozen=True, slots=True)
+class DtmfEvent:
+    """Inbound DTMF metadata with the sensitive digit deliberately discarded."""
+
+    sequence_number: int
+    track: str
+
+
+@dataclass(frozen=True, slots=True)
 class MarkEvent:
     sequence_number: int
     name: str
@@ -62,7 +70,9 @@ class StopEvent:
     sequence_number: int
 
 
-TwilioMediaStreamEvent = ConnectedEvent | StartEvent | MediaEvent | MarkEvent | StopEvent
+TwilioMediaStreamEvent = (
+    ConnectedEvent | StartEvent | MediaEvent | DtmfEvent | MarkEvent | StopEvent
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -131,6 +141,8 @@ def parse_twilio_event(message: object) -> TwilioMediaStreamEvent:
         return _parse_start(message)
     if event_name == "media":
         return _parse_media(message)
+    if event_name == "dtmf":
+        return _parse_dtmf(message)
     if event_name == "mark":
         return _parse_mark(message)
     if event_name == "stop":
@@ -175,6 +187,17 @@ def _parse_media(message: dict[object, object]) -> MediaEvent:
         timestamp_ms=_required_int(media, "timestamp"),
         payload=_required_str(media, "payload"),
         track=_optional_str(media.get("track")),
+    )
+
+
+def _parse_dtmf(message: dict[object, object]) -> DtmfEvent:
+    dtmf = _required_object(message, "dtmf")
+    digit = _required_str(dtmf, "digit")
+    if len(digit) != 1 or digit not in "0123456789*#ABCD":
+        raise TwilioProtocolError("TWILIO_DTMF_INVALID", "Twilio DTMF event is invalid")
+    return DtmfEvent(
+        sequence_number=_required_sequence(message),
+        track=_required_str(dtmf, "track"),
     )
 
 

@@ -35,6 +35,7 @@ from realtime_voice_agent.persistence.models import (
     TranscriptView,
 )
 from realtime_voice_agent.telephony.events import (
+    DtmfEvent,
     MarkEvent,
     MediaEvent,
     MediaFormat,
@@ -273,6 +274,19 @@ async def test_call_session_records_completed_lifecycle_and_timestamps() -> None
 
     await session.close()
     assert session.snapshot == completed
+
+
+async def test_inbound_dtmf_is_ignored_without_terminating_the_call() -> None:
+    nova = FakeNovaTransport()
+    session = _session(nova=nova, queue_max_frames=4)
+    session.handle_event(_start_event())
+
+    session.handle_event(DtmfEvent(sequence_number=2, track="inbound_track"))
+
+    assert session.state is CallSessionState.ACTIVE
+    assert session.failure_code is None
+    session.handle_event(StopEvent(sequence_number=3))
+    await session.close()
 
 
 async def test_start_does_not_enqueue_probe_audio() -> None:

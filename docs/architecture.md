@@ -140,6 +140,8 @@ The signed `/voice` form supplies `From` and `CallSid`. Both are immediately tra
 
 Pending reservations count against concurrency, so simultaneous selection callbacks cannot oversubscribe Nova. A claimed lease remains active until the media route's `finally` block releases it. The duration guard calls the same idempotent `CallSession.close()` path used by disconnect and shutdown.
 
+Twilio may emit `dtmf` events after the bidirectional stream starts. The parser validates the event shape, discards the pressed digit instead of retaining or logging it, and keeps the active voice session running.
+
 Capacity and budget use the same public response to avoid exposing internal thresholds. Per-caller rejection has a distinct but still bounded message. Every rejection uses `<Say>` followed by `<Hangup>`; no Nova stream or persistence session is created.
 
 There is no outbound-call route, TwiML dial operation, or Twilio REST client. The only telephone entry is an inbound webhook attached to one voice-capable Twilio number.

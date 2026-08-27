@@ -50,6 +50,7 @@ from realtime_voice_agent.persistence.models import (
 from realtime_voice_agent.persistence.ports import SessionRepository
 from realtime_voice_agent.telephony.events import (
     ConnectedEvent,
+    DtmfEvent,
     MarkEvent,
     MediaEvent,
     StartEvent,
@@ -455,6 +456,13 @@ class CallSession:
             return
         if isinstance(event, MediaEvent):
             self._handle_media(event)
+            return None
+        if isinstance(event, DtmfEvent):
+            self._logger.info(
+                "twilio_dtmf_ignored",
+                sequence_number=event.sequence_number,
+                track=event.track,
+            )
             return None
         if isinstance(event, MarkEvent):
             matched = event.name in self._pending_mark_names

@@ -5,6 +5,7 @@ from __future__ import annotations
 import pytest
 
 from realtime_voice_agent.telephony.events import (
+    DtmfEvent,
     MediaEvent,
     StartEvent,
     TwilioClearCommand,
@@ -71,6 +72,38 @@ def test_start_event_rejects_unbounded_custom_parameters(
         parse_twilio_event(message)
 
     assert error.value.code == "TWILIO_CUSTOM_PARAMETERS_INVALID"
+
+
+def test_dtmf_event_is_accepted_without_retaining_the_pressed_digit() -> None:
+    event = parse_twilio_event(
+        {
+            "event": "dtmf",
+            "sequenceNumber": "171",
+            "streamSid": "MZ00000000000000000000000000000000",
+            "dtmf": {"track": "inbound_track", "digit": "4"},
+        }
+    )
+
+    assert isinstance(event, DtmfEvent)
+    assert event.sequence_number == 171
+    assert event.track == "inbound_track"
+    assert not hasattr(event, "digit")
+
+
+def test_dtmf_event_rejects_invalid_digit_without_echoing_it() -> None:
+    invalid_digit = "private-value"
+
+    with pytest.raises(TwilioProtocolError) as error:
+        parse_twilio_event(
+            {
+                "event": "dtmf",
+                "sequenceNumber": "171",
+                "dtmf": {"track": "inbound_track", "digit": invalid_digit},
+            }
+        )
+
+    assert error.value.code == "TWILIO_DTMF_INVALID"
+    assert invalid_digit not in str(error.value)
 
 
 @pytest.mark.parametrize(

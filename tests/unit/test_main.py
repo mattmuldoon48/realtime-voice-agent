@@ -198,6 +198,33 @@ def test_demo_voice_menu_speaks_disclaimer_and_configured_persona_names() -> Non
     assert call_form["From"] not in response.text
 
 
+def test_demo_selection_speaks_persona_greeting_before_connecting_stream() -> None:
+    store = _demo_store()
+    call_form = {
+        "CallSid": "CA11111111111111111111111111111114",
+        "From": "+15555550108",
+    }
+    with TestClient(
+        create_app(
+            _settings(demo_mode_enabled=True),
+            persistence_store=store,
+        )
+    ) as client:
+        assert _signed_post(client, "/voice", call_form).status_code == 200
+        response = _signed_post(
+            client,
+            "/select-persona",
+            {**call_form, "Digits": "4"},
+        )
+
+    greeting = "Hello. Your History Guide is ready. How can I help you today?"
+    assert response.status_code == 200
+    assert greeting in response.text
+    assert response.text.index(greeting) < response.text.index("<Connect>")
+    assert store.personas["history-guide"].system_prompt not in response.text
+    assert call_form["From"] not in response.text
+
+
 def test_demo_selection_rejects_invalid_signature() -> None:
     call_form = {
         "CallSid": "CA11111111111111111111111111111112",

@@ -22,9 +22,12 @@ def build_connect_stream_twiml(
     *,
     media_ws_url: str,
     custom_parameters: Mapping[str, str] | None = None,
+    spoken_intro: str | None = None,
 ) -> str:
-    """Build TwiML that asks Twilio to open a bidirectional Media Stream."""
+    """Build TwiML that introduces and opens a bidirectional Media Stream."""
     response = VoiceResponse()
+    if spoken_intro is not None:
+        response.say(spoken_intro)
     connect = Connect()
     stream = connect.stream(url=media_ws_url)
     for name, value in (custom_parameters or {}).items():

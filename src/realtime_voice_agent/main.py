@@ -303,6 +303,7 @@ def create_app(
         twiml = build_connect_stream_twiml(
             media_ws_url=config.public_media_ws_url,
             custom_parameters={"demoReservation": reservation.token},
+            spoken_intro=f"Hello. Your {persona.name} is ready. How can I help you today?",
         )
         _app_logger(app).info(
             "demo_persona_selected",

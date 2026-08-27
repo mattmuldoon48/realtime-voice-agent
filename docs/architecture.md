@@ -116,7 +116,8 @@ flowchart LR
     Gate -->|allowed| Menu[Spoken disclaimer and DTMF menu]
     Menu --> Select[Signed POST /select-persona]
     Select --> Personas[(Versioned persona store)]
-    Select --> Reserve[Opaque short-lived reservation]
+    Select --> Intro[Brief Twilio-spoken persona greeting]
+    Intro --> Reserve[Opaque short-lived reservation]
     Reserve --> Media[Signed WSS /media]
     Media --> Validate[Account, format, reservation, persona version]
     Validate --> Runtime[Shared CallSession and Nova runtime]
@@ -124,6 +125,8 @@ flowchart LR
 ```
 
 `DEMO_PERSONA_CHOICES` maps DTMF digits to persona IDs. Menu labels and the selected prompt, voice, and version are loaded from the existing persona repository. Application code contains no prompt branches. The selection callback places only an opaque reservation token in Twilio's `<Stream><Parameter>`; it does not expose the persona ID or prompt in the media URL.
+
+The selection response speaks a short confirmation such as “Your History Guide is ready” before opening the stream. Twilio handles this one sentence, so the Nova conversation is not seeded with a synthetic caller turn and the shared media runtime remains unchanged.
 
 The signed `/voice` form supplies `From` and `CallSid`. Both are immediately transformed into domain-separated HMAC keys using the Twilio auth token, then discarded. Admission state retains only those keys, monotonic timestamps, an opaque token, persona ID/version, and expiry.
 

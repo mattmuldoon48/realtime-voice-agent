@@ -100,6 +100,7 @@ class FakeNovaTransport:
         self.close_finished = asyncio.Event()
         self.events_cancelled = asyncio.Event()
         self.sent_audio: list[bytes] = []
+        self.sent_text: list[str] = []
         self.output_events: asyncio.Queue[NovaServerEvent | None] = asyncio.Queue()
         self.close_calls = 0
         self.system_prompts: list[str] = []
@@ -121,6 +122,9 @@ class FakeNovaTransport:
         await self._start_gate.wait()
         self.started.set()
         self._state = NovaSessionState.ACTIVE
+
+    async def send_text(self, text: str) -> None:
+        self.sent_text.append(text)
 
     async def start_audio_input(self) -> None:
         assert self._state is NovaSessionState.ACTIVE
@@ -286,6 +290,24 @@ async def test_inbound_dtmf_is_ignored_without_terminating_the_call() -> None:
     assert session.state is CallSessionState.ACTIVE
     assert session.failure_code is None
     session.handle_event(StopEvent(sequence_number=3))
+    await session.close()
+
+
+async def test_initial_text_prompt_is_sent_once_before_caller_audio() -> None:
+    nova = FakeNovaTransport()
+    session = _session(
+        nova=nova,
+        queue_max_frames=4,
+        initial_text_prompt="Hello",
+    )
+
+    session.handle_event(_start_event())
+    await asyncio.wait_for(nova.started.wait(), timeout=1)
+    await asyncio.sleep(0)
+
+    assert nova.sent_text == ["Hello"]
+    assert nova.sent_audio == []
+    session.handle_event(StopEvent(sequence_number=2))
     await session.close()
 
 
@@ -945,6 +967,7 @@ def _session(
     cleanup_timeout_seconds: float = 5.0,
     persistence_max_attempts: int = 3,
     persistence_retry_base_delay_seconds: float = 0.1,
+    initial_text_prompt: str | None = None,
 ) -> CallSession:
     logger = cast(FilteringBoundLogger, structlog.get_logger())
     return CallSession(
@@ -959,6 +982,7 @@ def _session(
         session_repository=repository or FakeSessionRepository(),
         persistence_queue_max_events=persistence_queue_max_events,
         transcript_retention_days=7,
+        initial_text_prompt=initial_text_prompt,
         telemetry=telemetry,
         environment="test",
         clock=clock,

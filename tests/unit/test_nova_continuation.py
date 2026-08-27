@@ -51,6 +51,7 @@ class FakeTransport:
         self.system_prompt: str | None = None
         self.history: tuple[ConversationHistoryTurn, ...] = ()
         self.sent_audio: list[bytes] = []
+        self.sent_text: list[str] = []
         self.audio_starts = 0
         self.close_calls = 0
         self.start_started = asyncio.Event()
@@ -73,6 +74,9 @@ class FakeTransport:
         self.system_prompt = system_prompt
         self.history = history
         self._state = NovaSessionState.ACTIVE
+
+    async def send_text(self, text: str) -> None:
+        self.sent_text.append(text)
 
     async def start_audio_input(self) -> None:
         self.audio_starts += 1
@@ -129,6 +133,7 @@ async def test_rotation_replays_final_history_and_buffer_then_rejects_retired_ou
         audio_buffer_max_bytes=8,
     )
     await manager.start(system_prompt="Keep responses brief.")
+    await manager.send_text("Hello")
     await manager.start_audio_input()
     await manager.send_audio(b"\x01\x00\x02\x00")
     await manager.send_audio(b"\x03\x00\x04\x00")
@@ -156,6 +161,8 @@ async def test_rotation_replays_final_history_and_buffer_then_rejects_retired_ou
     assert succeeded.buffered_pcm16_bytes == 8
     assert len(transports) == 2
     assert transports[1].system_prompt == "Keep responses brief."
+    assert transports[0].sent_text == ["Hello"]
+    assert transports[1].sent_text == []
     assert transports[1].history == (
         ConversationHistoryTurn(
             role=ConversationRole.USER,

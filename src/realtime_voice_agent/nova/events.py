@@ -226,6 +226,42 @@ def build_history_events(
     return tuple(events)
 
 
+def build_interactive_text_events(
+    *,
+    prompt_name: str,
+    text: str,
+) -> tuple[bytes, ...]:
+    """Build one interactive USER text turn that prompts a spoken response."""
+    if not prompt_name.strip() or not text.strip():
+        raise NovaProtocolError("interactive text prompt values must not be blank")
+    content_name = str(uuid.uuid4())
+    return (
+        _encode_event(
+            "contentStart",
+            {
+                "promptName": prompt_name,
+                "contentName": content_name,
+                "type": "TEXT",
+                "interactive": True,
+                "role": "USER",
+                "textInputConfiguration": {"mediaType": MEDIA_TYPE_TEXT},
+            },
+        ),
+        _encode_event(
+            "textInput",
+            {
+                "promptName": prompt_name,
+                "contentName": content_name,
+                "content": text,
+            },
+        ),
+        build_content_end(
+            prompt_name=prompt_name,
+            content_name=content_name,
+        ),
+    )
+
+
 def build_audio_content_start(
     *,
     ids: NovaEventIds,

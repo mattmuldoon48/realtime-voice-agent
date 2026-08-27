@@ -105,6 +105,11 @@ class ContinuingNovaSonicTransport:
             name="nova-continuation-timer",
         )
 
+    async def send_text(self, text: str) -> None:
+        """Route one initial interactive text turn to the first generation."""
+        async with self._route_lock:
+            await self._active.send_text(text)
+
     async def start_audio_input(self) -> None:
         """Open audio input on the initial active stream."""
         async with self._route_lock:

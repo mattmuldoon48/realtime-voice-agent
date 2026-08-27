@@ -198,33 +198,6 @@ def test_demo_voice_menu_speaks_disclaimer_and_configured_persona_names() -> Non
     assert call_form["From"] not in response.text
 
 
-def test_demo_selection_speaks_persona_greeting_before_connecting_stream() -> None:
-    store = _demo_store()
-    call_form = {
-        "CallSid": "CA11111111111111111111111111111114",
-        "From": "+15555550108",
-    }
-    with TestClient(
-        create_app(
-            _settings(demo_mode_enabled=True),
-            persistence_store=store,
-        )
-    ) as client:
-        assert _signed_post(client, "/voice", call_form).status_code == 200
-        response = _signed_post(
-            client,
-            "/select-persona",
-            {**call_form, "Digits": "4"},
-        )
-
-    greeting = "Hello. Your History Guide is ready. How can I help you today?"
-    assert response.status_code == 200
-    assert greeting in response.text
-    assert response.text.index(greeting) < response.text.index("<Connect>")
-    assert store.personas["history-guide"].system_prompt not in response.text
-    assert call_form["From"] not in response.text
-
-
 def test_demo_selection_rejects_invalid_signature() -> None:
     call_form = {
         "CallSid": "CA11111111111111111111111111111112",
@@ -324,6 +297,7 @@ def test_demo_selection_loads_versioned_persona_in_shared_runtime_without_transc
                 websocket.receive_json()
 
     assert nova.system_prompt == selected.system_prompt
+    assert nova.sent_text == ["Hello"]
     assert store.active_persona_reads == 0
     assert store.sessions[0].persona.persona_id == selected.persona_id
     assert store.sessions[0].persona.version == selected.version
@@ -448,6 +422,8 @@ def test_demo_duration_guard_closes_call_with_bounded_nonfailure_reason() -> Non
         with client.websocket_connect("/media", headers=_valid_media_headers()) as websocket:
             websocket.send_json({"event": "connected", "protocol": "Call", "version": "1.0.0"})
             websocket.send_json(_start_message(custom_parameters={"demoReservation": token}))
+            assert websocket.receive_json()["event"] == "media"
+            assert websocket.receive_json()["event"] == "mark"
             with pytest.raises(WebSocketDisconnect) as closed:
                 websocket.receive_json()
 
@@ -764,6 +740,7 @@ class FakeNovaTransport:
             CompletionEnded(),
         )
         self.sent_audio: list[bytes] = []
+        self.sent_text: list[str] = []
         self._closed = asyncio.Event()
         self.system_prompt: str | None = None
 
@@ -780,6 +757,10 @@ class FakeNovaTransport:
         self.system_prompt = system_prompt
         assert system_prompt
         self._state = NovaSessionState.ACTIVE
+
+    async def send_text(self, text: str) -> None:
+        self.sent_text.append(text)
+        self._output_ready.set()
 
     async def start_audio_input(self) -> None:
         assert self._state is NovaSessionState.ACTIVE

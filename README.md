@@ -75,11 +75,12 @@ Configure one voice-capable Twilio number's incoming webhook as `POST https://YO
 1. Twilio signs `POST /voice`. The application validates the exact public URL, HMACs and discards the caller/call identifiers, applies the rolling caller limit, then checks global capacity and call-start budget.
 2. The caller hears the portfolio/privacy disclaimer and presses one digit for Care Coordinator, Financial Services Assistant, Travel Concierge, or History Guide.
 3. Signed `POST /select-persona` maps the digit to a configured persona ID, reloads its current version from DynamoDB, and reserves one short-lived global slot.
-4. Twilio speaks a brief confirmation using the configured persona name, then receives `<Connect><Stream>` with only an opaque reservation parameter. Persona IDs and prompts are not placed in the media URL.
+4. Twilio receives `<Connect><Stream>` with only an opaque reservation parameter. Persona IDs and prompts are not placed in the media URL.
 5. `/media` validates the WebSocket signature, Account SID, fixed μ-law format, reservation, and selected persona version before persistence or Nova starts.
-6. The selected persona snapshot enters the same `CallSession`, codec, Nova, persistence, and telemetry pipeline used by the non-demo path.
-7. The duration guard performs bounded idempotent cleanup after `DEMO_MAX_CALL_DURATION_SECONDS`; the default is five minutes.
-8. Capacity, rolling budget, and caller-rate rejection paths speak a short message and hang up without opening Nova.
+6. `CallSession` sends one interactive `Hello` text turn to Nova before opening caller audio, causing Nova to greet in the selected voice.
+7. The selected persona stays in the same codec, Nova, persistence, and telemetry pipeline used by the non-demo path; continuation streams do not repeat the greeting.
+8. The duration guard performs bounded idempotent cleanup after `DEMO_MAX_CALL_DURATION_SECONDS`; the default is five minutes.
+9. Capacity, rolling budget, and caller-rate rejection paths speak a short message and hang up without opening Nova.
 
 The controls are application-level cost bounds, not billing guarantees. Twilio begins charging before the webhook runs. Configure Twilio Usage Triggers, balance alerts, geographic permissions, and AWS Budgets separately.
 

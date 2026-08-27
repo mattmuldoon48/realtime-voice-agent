@@ -20,6 +20,7 @@ from realtime_voice_agent.nova.events import (
     build_audio_content_start,
     build_audio_input,
     build_initialization_events,
+    build_interactive_text_events,
     transition_state,
     validate_pcm16_chunk,
 )
@@ -83,6 +84,28 @@ def test_initialization_event_order_and_output_contract(
         "encoding": "base64",
         "audioType": "SPEECH",
     }
+
+
+def test_interactive_text_turn_prompts_spoken_user_response_without_audio() -> None:
+    events = build_interactive_text_events(
+        prompt_name="prompt-id",
+        text="Hello",
+    )
+
+    decoded = [decode_event(payload)["event"] for payload in events]
+    event_names = [next(iter(event)) for event in decoded]
+    content_start = decoded[0]["contentStart"]
+    text_input = decoded[1]["textInput"]
+    content_end = decoded[2]["contentEnd"]
+
+    assert event_names == ["contentStart", "textInput", "contentEnd"]
+    assert content_start["promptName"] == "prompt-id"
+    assert content_start["type"] == "TEXT"
+    assert content_start["interactive"] is True
+    assert content_start["role"] == "USER"
+    assert text_input["content"] == "Hello"
+    assert text_input["contentName"] == content_start["contentName"]
+    assert content_end["contentName"] == content_start["contentName"]
 
 
 def test_audio_content_start_has_explicit_input_contract(

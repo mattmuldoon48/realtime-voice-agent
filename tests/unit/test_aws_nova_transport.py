@@ -13,7 +13,12 @@ from realtime_voice_agent.nova.aws_transport import (
     AwsNovaSonicTransport,
     _create_credentials_resolver,
 )
-from realtime_voice_agent.nova.events import CompletionEnded, NovaSessionState, OutputAudio
+from realtime_voice_agent.nova.events import (
+    CompletionEnded,
+    NovaProtocolError,
+    NovaSessionState,
+    OutputAudio,
+)
 
 
 @pytest.fixture
@@ -51,6 +56,31 @@ async def test_close_before_start_is_idempotent(config: NovaRuntimeConfig) -> No
     await transport.close()
 
     assert transport.state is NovaSessionState.CLOSED
+
+
+@pytest.mark.asyncio
+async def test_interactive_text_must_precede_audio_input(
+    config: NovaRuntimeConfig,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    transport = AwsNovaSonicTransport(config)
+    transport._state = NovaSessionState.ACTIVE
+    sent: list[bytes] = []
+
+    async def capture(payload: bytes) -> None:
+        sent.append(payload)
+
+    monkeypatch.setattr(transport, "_send", capture)
+    await transport.send_text("Hello")
+
+    assert len(sent) == 3
+    assert b'"interactive":true' in sent[0]
+    assert b'"role":"USER"' in sent[0]
+    assert b'"content":"Hello"' in sent[1]
+
+    transport._audio_started = True
+    with pytest.raises(NovaProtocolError, match="must precede audio input"):
+        await transport.send_text("Hello again")
 
 
 @pytest.mark.asyncio

@@ -38,6 +38,7 @@ from realtime_voice_agent.nova.events import (
     build_content_end,
     build_history_events,
     build_initialization_events,
+    build_interactive_text_events,
     build_prompt_end,
     build_session_end,
     transition_state,
@@ -127,6 +128,17 @@ class AwsNovaSonicTransport:
             self._state = transition_state(self._state, NovaSessionState.FAILED)
             await self._close_input_stream()
             raise
+
+    async def send_text(self, text: str) -> None:
+        """Send one interactive USER text turn before opening caller audio."""
+        self._require_state(NovaSessionState.ACTIVE)
+        if self._audio_started:
+            raise NovaProtocolError("Nova interactive text must precede audio input")
+        for event in build_interactive_text_events(
+            prompt_name=self._ids.prompt_name,
+            text=text,
+        ):
+            await self._send(event)
 
     async def start_audio_input(self) -> None:
         """Declare the PCM16LE mono 16 kHz input content block once."""

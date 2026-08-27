@@ -303,7 +303,6 @@ def create_app(
         twiml = build_connect_stream_twiml(
             media_ws_url=config.public_media_ws_url,
             custom_parameters={"demoReservation": reservation.token},
-            spoken_intro=f"Hello. Your {persona.name} is ready. How can I help you today?",
         )
         _app_logger(app).info(
             "demo_persona_selected",
@@ -393,6 +392,7 @@ def create_app(
             persistence_queue_max_events=persistence_config.queue_max_events,
             transcript_retention_days=persistence_config.transcript_retention_days,
             persist_transcripts=(demo_config.persist_transcripts if demo_config.enabled else True),
+            initial_text_prompt="Hello" if demo_config.enabled else None,
             cleanup_timeout_seconds=persistence_config.cleanup_timeout_seconds,
             persistence_max_attempts=persistence_config.max_attempts,
             persistence_retry_base_delay_seconds=persistence_config.retry_base_delay_seconds,

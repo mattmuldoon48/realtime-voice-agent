@@ -235,6 +235,7 @@ class CallSession:
         persistence_queue_max_events: int,
         transcript_retention_days: int,
         persist_transcripts: bool = True,
+        initial_text_prompt: str | None = None,
         telemetry: TelemetryPublisher | None = None,
         persistence_max_attempts: int = 3,
         persistence_retry_base_delay_seconds: float = 0.1,
@@ -257,6 +258,8 @@ class CallSession:
             raise ValueError("persistence retry settings are outside their bounds")
         if not expected_twilio_account_sid:
             raise ValueError("expected Twilio account SID must not be blank")
+        if initial_text_prompt is not None and not initial_text_prompt.strip():
+            raise ValueError("initial text prompt must not be blank")
         self._logger = logger
         self._expected_twilio_account_sid = expected_twilio_account_sid
         self._malformed_frame_limit = malformed_frame_limit
@@ -269,6 +272,7 @@ class CallSession:
         self._persistence_max_attempts = persistence_max_attempts
         self._persistence_retry_base_delay_seconds = persistence_retry_base_delay_seconds
         self._persist_transcripts = persist_transcripts
+        self._initial_text_prompt = initial_text_prompt
         self._state = CallSessionState.STARTING
         self._outcome: CallOutcome | None = None
         self._termination_reason: CallTerminationReason | None = None
@@ -690,6 +694,9 @@ class CallSession:
     async def _run_nova(self) -> None:
         try:
             await self._nova.start(system_prompt=self._persona.system_prompt)
+            if self._initial_text_prompt is not None:
+                await self._nova.send_text(self._initial_text_prompt)
+                self._logger.info("nova_initial_greeting_requested")
             await self._nova.start_audio_input()
             self._logger.info("nova_input_bridge_started")
             await self._run_nova_workers()

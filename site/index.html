@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f1e9">
+    <meta
+      name="description"
+      content="Call a live, configurable speech-to-speech AI agent powered by Twilio and Amazon Nova 2 Sonic."
+    >
+    <meta property="og:title" content="Real-Time AI Voice Agent">
+    <meta
+      property="og:description"
+      content="A live engineering demo of authenticated, low-latency speech-to-speech AI."
+    >
+    <meta property="og:type" content="website">
+    <title>Real-Time AI Voice Agent | Live Portfolio Demo</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="#top" aria-label="Real-Time AI Voice Agent home">
+          <svg class="brand-mark" viewBox="0 0 36 36" aria-hidden="true">
+            <rect x="1" y="1" width="34" height="34" rx="10"></rect>
+            <path d="M9 19h3l2-7 4 13 3-9 2 3h4"></path>
+          </svg>
+          <span>Voice Agent</span>
+        </a>
+        <nav class="header-nav" aria-label="Primary navigation">
+          <a href="#how-it-works">How it works</a>
+          <a href="#architecture">Architecture</a>
+          <a
+            class="nav-github"
+            href="https://github.com/mattmuldoon48/realtime-voice-agent"
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M4.2 11.8 11.8 4.2M6 4h6v6"></path>
+            </svg>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section class="hero" id="top">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow">
+              <span class="status-dot" aria-hidden="true"></span>
+              Live portfolio demo · Inbound calls only
+            </div>
+            <h1>Real-Time AI<br>Voice Agent</h1>
+            <p class="hero-lede">
+              A configurable speech-to-speech system that bridges a live phone call to Amazon Nova
+              2 Sonic—with authenticated streaming, versioned personas, and production-minded
+              safeguards.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="tel:+12675738471">
+                <svg viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M6.1 2.5 8 6.6 5.8 8a12.3 12.3 0 0 0 6.2 6.2l1.4-2.2 4.1 1.9-.7 3.2c-.2.8-.9 1.4-1.8 1.4A13.5 13.5 0 0 1 1.5 5c0-.9.6-1.6 1.4-1.8l3.2-.7Z"></path>
+                </svg>
+                Call&nbsp;Live&nbsp;Demo
+              </a>
+              <a
+                class="button button-secondary"
+                href="https://github.com/mattmuldoon48/realtime-voice-agent"
+                target="_blank"
+                rel="noreferrer"
+              >
+                View source
+              </a>
+            </div>
+            <a class="phone-number" href="tel:+12675738471" aria-label="Call 267 573 8471">
+              <span>+1</span>&nbsp;(267)&nbsp;573&#8209;8471
+            </a>
+            <div class="hero-meta" role="group" aria-label="Demo limits">
+              <span>4 personas</span>
+              <span>5 minute maximum</span>
+              <span>No signup</span>
+            </div>
+          </div>
+
+          <aside class="demo-card" aria-label="Live demo overview">
+            <div class="demo-card-header">
+              <div>
+                <span class="demo-kicker">LIVE CALL</span>
+                <h2>Choose your agent</h2>
+              </div>
+              <span class="live-pill"><span aria-hidden="true"></span> Ready</span>
+            </div>
+            <ol class="demo-persona-list">
+              <li><span>1</span><strong>Care Coordinator</strong></li>
+              <li><span>2</span><strong>Financial Services Assistant</strong></li>
+              <li><span>3</span><strong>Travel Concierge</strong></li>
+              <li><span>4</span><strong>History Guide</strong></li>
+            </ol>
+            <div class="demo-card-footer">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 12h2m2 0h1m2 0h2m2 0h1m2 0h2M6 8v8m3-6v4m4-6v8m3-6v4m4-6v8"></path>
+              </svg>
+              <p>Nova greets you in the selected voice. Then just speak naturally.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <div class="container">
+        <aside class="safety-notice" aria-label="Demo safety notice">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3 3.5 7v5c0 5 3.6 8 8.5 9 4.9-1 8.5-4 8.5-9V7L12 3Z"></path>
+            <path d="M12 8v5m0 3h.01"></path>
+          </svg>
+          <p>
+            <strong>Portfolio demonstration only.</strong> Do not provide real medical, financial,
+            authentication, account, or other sensitive personal information.
+          </p>
+        </aside>
+      </div>
+
+      <section class="section personas" id="personas">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <span class="section-label">CONFIGURED PERSONAS</span>
+              <h2>One runtime. Four distinct roles.</h2>
+            </div>
+            <p>Prompts and voices are versioned configuration—not hardcoded application branches.</p>
+          </div>
+          <div class="persona-grid">
+            <article class="persona-card persona-care">
+              <div class="persona-topline"><span>01</span><span class="persona-symbol">+</span></div>
+              <h3>Care Coordinator</h3>
+              <p>Helps organize appointment questions, follow-up tasks, and general care navigation.</p>
+            </article>
+            <article class="persona-card persona-finance">
+              <div class="persona-topline"><span>02</span><span class="persona-symbol">$</span></div>
+              <h3>Financial Services Assistant</h3>
+              <p>Explains general financial concepts and common service workflows—without account access.</p>
+            </article>
+            <article class="persona-card persona-travel">
+              <div class="persona-topline"><span>03</span><span class="persona-symbol">↗</span></div>
+              <h3>Travel Concierge</h3>
+              <p>Builds practical itineraries around destination, timing, and traveler preferences.</p>
+            </article>
+            <article class="persona-card persona-history">
+              <div class="persona-topline"><span>04</span><span class="persona-symbol">⌂</span></div>
+              <h3>History Guide</h3>
+              <p>Explores people, places, and events with concise, evidence-aware historical context.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section steps-section" id="how-it-works">
+        <div class="container">
+          <div class="section-heading compact-heading">
+            <div>
+              <span class="section-label">TRY IT IN SECONDS</span>
+              <h2>Call, choose, talk.</h2>
+            </div>
+          </div>
+          <ol class="steps-grid">
+            <li>
+              <span class="step-number">1</span>
+              <div><h3>Call the demo</h3><p>Dial the public number from any phone.</p></div>
+            </li>
+            <li>
+              <span class="step-number">2</span>
+              <div><h3>Hear the introduction</h3><p>A short safety notice explains the demo.</p></div>
+            </li>
+            <li>
+              <span class="step-number">3</span>
+              <div><h3>Choose a persona</h3><p>Press 1–4 to select the agent you want.</p></div>
+            </li>
+            <li>
+              <span class="step-number">4</span>
+              <div><h3>Start talking</h3><p>Nova greets you, then the conversation is natural.</p></div>
+            </li>
+          </ol>
+          <div class="inline-callout">
+            <p><strong>Ready to try it?</strong> The complete call takes less than a minute to understand.</p>
+            <a href="tel:+12675738471">Call&nbsp;(267)&nbsp;573&#8209;8471</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section architecture-section" id="architecture">
+        <div class="container">
+          <div class="architecture-panel">
+            <div class="architecture-heading">
+              <div>
+                <span class="section-label light-label">SYSTEM OVERVIEW</span>
+                <h2>Streaming audio, one bounded path.</h2>
+              </div>
+              <a
+                href="https://github.com/mattmuldoon48/realtime-voice-agent/blob/main/docs/architecture.md"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Read architecture docs
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+
+            <div
+              class="architecture-flow"
+              role="img"
+              aria-label="Phone connects to Twilio Media Streams, then FastAPI voice service, then Amazon Nova 2 Sonic. DynamoDB and CloudWatch connect to the FastAPI service."
+            >
+              <div class="architecture-node">
+                <span class="node-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3h8a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm2 15h4"></path></svg>
+                </span>
+                <span class="node-label">INPUT</span>
+                <strong>Phone</strong>
+                <small>G.711 μ-law · 8 kHz</small>
+              </div>
+              <span class="flow-arrow" aria-hidden="true">→</span>
+              <div class="architecture-node">
+                <span class="node-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12a7 7 0 0 1 14 0M8 12a4 4 0 0 1 8 0M12 12v7m-3 0h6"></path></svg>
+                </span>
+                <span class="node-label">INGRESS</span>
+                <strong>Twilio</strong>
+                <small>Media Streams · WSS</small>
+              </div>
+              <span class="flow-arrow" aria-hidden="true">→</span>
+              <div class="architecture-node architecture-node-core">
+                <span class="node-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10M7 4v16m10-16v10"></path></svg>
+                </span>
+                <span class="node-label">ORCHESTRATION</span>
+                <strong>FastAPI</strong>
+                <small>Auth · audio · session</small>
+              </div>
+              <span class="flow-arrow" aria-hidden="true">→</span>
+              <div class="architecture-node architecture-node-nova">
+                <span class="node-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.1 5.2L20 10l-4.5 3.5.2 5.7-3.7-3-3.7 3 .2-5.7L4 10l5.9-1.8L12 3Z"></path></svg>
+                </span>
+                <span class="node-label">INTELLIGENCE</span>
+                <strong>Nova 2 Sonic</strong>
+                <small>Speech-to-speech</small>
+              </div>
+            </div>
+
+            <div class="support-flow" role="group" aria-label="Supporting services">
+              <div class="support-line" aria-hidden="true"></div>
+              <div class="support-node">
+                <span>DynamoDB</span>
+                <small>Personas · sessions · lifecycle</small>
+              </div>
+              <div class="support-node">
+                <span>CloudWatch</span>
+                <small>Structured logs · metrics · alarms</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section engineering-section" id="engineering">
+        <div class="container engineering-layout">
+          <div class="engineering-intro">
+            <span class="section-label">ENGINEERING HIGHLIGHTS</span>
+            <h2>Built for the difficult parts of live voice.</h2>
+            <p>
+              The project focuses on timing, trust boundaries, failure isolation, and operational
+              clarity—not a scripted chatbot demo.
+            </p>
+            <a
+              class="text-link"
+              href="https://github.com/mattmuldoon48/realtime-voice-agent"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Explore the implementation <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+          <ul class="highlight-list">
+            <li><span>01</span><div><strong>Full-duplex audio</strong><p>Stateful μ-law/PCM conversion and real-time bidirectional streaming.</p></div></li>
+            <li><span>02</span><div><strong>Authenticated ingress</strong><p>Exact-URL signature checks on Twilio webhooks and WebSockets.</p></div></li>
+            <li><span>03</span><div><strong>Configurable personas</strong><p>Versioned prompts and voices loaded from DynamoDB per call.</p></div></li>
+            <li><span>04</span><div><strong>Bounded pipelines</strong><p>Backpressure, queue limits, retries, and idempotent cleanup.</p></div></li>
+            <li><span>05</span><div><strong>Privacy-aware telemetry</strong><p>Structured CloudWatch signals without phone numbers or transcript text.</p></div></li>
+            <li><span>06</span><div><strong>Public-demo controls</strong><p>Caller rate, concurrency, duration, and rolling budget safeguards.</p></div></li>
+            <li><span>07</span><div><strong>Durable lifecycle</strong><p>On-demand DynamoDB state with deterministic terminal outcomes.</p></div></li>
+            <li><span>08</span><div><strong>Automated confidence</strong><p>192 tests covering protocols, audio, failure paths, and infrastructure.</p></div></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section stack-section" id="stack">
+        <div class="container">
+          <div class="section-heading compact-heading">
+            <div>
+              <span class="section-label">TECHNOLOGY STACK</span>
+              <h2>Purpose-built, mostly managed.</h2>
+            </div>
+          </div>
+          <ul class="stack-list" aria-label="Technology stack">
+            <li>Python</li>
+            <li>FastAPI</li>
+            <li>Amazon Bedrock</li>
+            <li>Nova 2 Sonic</li>
+            <li>Twilio</li>
+            <li>DynamoDB</li>
+            <li>CloudWatch</li>
+            <li>ECS / Fargate</li>
+            <li>CloudFront</li>
+          </ul>
+          <div class="project-links">
+            <div>
+              <span class="section-label">PROJECT LINKS</span>
+              <h2>Read the code. Trace the decisions.</h2>
+            </div>
+            <div class="project-link-actions">
+              <a
+                class="button button-dark"
+                href="https://github.com/mattmuldoon48/realtime-voice-agent"
+                target="_blank"
+                rel="noreferrer"
+              >
+                GitHub repository <span aria-hidden="true">↗</span>
+              </a>
+              <a
+                class="button button-outline"
+                href="https://github.com/mattmuldoon48/realtime-voice-agent/blob/main/docs/architecture.md"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Architecture notes
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>
+          <a class="brand footer-brand" href="#top">
+            <svg class="brand-mark" viewBox="0 0 36 36" aria-hidden="true">
+              <rect x="1" y="1" width="34" height="34" rx="10"></rect>
+              <path d="M9 19h3l2-7 4 13 3-9 2 3h4"></path>
+            </svg>
+            <span>Real-Time AI Voice Agent</span>
+          </a>
+          <p>Engineering portfolio demonstration. Built and operated by Matthew Muldoon.</p>
+        </div>
+        <div class="footer-links">
+          <a href="tel:+12675738471">Call&nbsp;demo</a>
+          <a href="https://github.com/mattmuldoon48/realtime-voice-agent" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="#top">Back to top</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

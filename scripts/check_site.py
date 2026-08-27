@@ -68,8 +68,14 @@ def _fail(message: str) -> None:
 def main() -> None:
     index_path = _SITE / "index.html"
     css_path = _SITE / "styles.css"
-    favicon_path = _SITE / "favicon.svg"
-    for required_file in (index_path, css_path, favicon_path):
+    required_files = (
+        index_path,
+        css_path,
+        _SITE / "favicon.svg",
+        _SITE / "paper-grain.svg",
+        _SITE / "voice-plate.svg",
+    )
+    for required_file in required_files:
         if not required_file.is_file():
             _fail(f"missing {required_file.relative_to(_ROOT)}")
 
@@ -111,7 +117,7 @@ def main() -> None:
         if required_text.casefold() not in normalized_text.casefold():
             _fail(f"missing required copy: {required_text}")
 
-    public_files = f"{html}\n{css}"
+    public_files = "\n".join(path.read_text(encoding="utf-8") for path in required_files)
     for pattern in _SECRET_PATTERNS:
         if pattern.search(public_files):
             _fail(f"possible credential matched {pattern.pattern}")

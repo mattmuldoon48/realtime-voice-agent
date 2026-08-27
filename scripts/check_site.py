@@ -72,8 +72,6 @@ def main() -> None:
         index_path,
         css_path,
         _SITE / "favicon.svg",
-        _SITE / "paper-grain.svg",
-        _SITE / "voice-plate.svg",
     )
     for required_file in required_files:
         if not required_file.is_file():
@@ -126,8 +124,10 @@ def main() -> None:
         _fail("unbalanced CSS blocks")
     if "@import" in css or re.search(r"url\(\s*['\"]?https?://", css):
         _fail("landing page must not depend on remote CSS assets")
-    if "@keyframes" in css or re.search(r"\banimation\s*:", css):
-        _fail("decorative animation is outside the design contract")
+    if re.search(r"\banimation\s*:", css) and (
+        "prefers-reduced-motion: reduce" not in css or "animation: none" not in css
+    ):
+        _fail("CSS motion must provide a reduced-motion override")
     if len(html.encode()) > 40_000 or len(css.encode()) > 35_000:
         _fail("static page exceeds the size budget")
 

@@ -2,6 +2,8 @@
 
 A production-minded Python service that connects a live Twilio phone call to Amazon Nova 2 Sonic over a full-duplex audio stream. It handles telephony authentication, stateful audio conversion, model streaming, interruption, session continuation, DynamoDB persistence, and CloudWatch telemetry without blocking the media path.
 
+**Live project page:** [mattmuldoon48.github.io/realtime-voice-agent](https://mattmuldoon48.github.io/realtime-voice-agent/)
+
 ## What it demonstrates
 
 - **Real-time bidirectional audio:** Twilio G.711 μ-law at 8 kHz ↔ Nova PCM16LE at 16/24 kHz.

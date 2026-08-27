@@ -658,6 +658,16 @@ dd {
   font-weight: 800;
 }
 
+.route-key svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
 .route-profile {
   display: grid;
   min-width: 0;

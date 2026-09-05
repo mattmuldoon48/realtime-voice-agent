@@ -4,7 +4,7 @@ A production-minded Python service that connects a live Twilio phone call to Ama
 
 **Live project page:** [mattmuldoon48.github.io/realtime-voice-agent](https://mattmuldoon48.github.io/realtime-voice-agent/)
 
-The dependency-free landing page lives in `site/` and deploys to GitHub Pages when site changes are pushed to `main`. Its CSS animations illustrate audio flow rather than live call activity; visitors can pause them with the “Pause animations” checkbox, and reduced-motion preferences disable them automatically.
+The dependency-free landing page lives in `site/` and deploys to GitHub Pages when site changes are pushed to `main`. Its CSS animations illustrate audio flow rather than live call activity, settle within five seconds, and are disabled automatically for reduced-motion preferences.
 
 Before publishing, `python scripts/build_site.py` packages the page into `dist/site/` and gives the stylesheet and favicon content-based version URLs. GitHub Pages deploys that directory so returning visitors do not combine new HTML with an older cached stylesheet. Preview the deployment artifact with `python -m http.server 4174 --directory dist/site`.
 

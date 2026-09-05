@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f8f7f4">
+    <meta name="color-scheme" content="only light">
     <meta name="description" content="Call an AI voice agent to explore travel, history, healthcare navigation, or financial concepts in a live demo powered by Twilio and Amazon Nova 2 Sonic.">
     <meta property="og:title" content="Real-Time AI Voice Agent">
     <meta property="og:description" content="Try a live speech-to-speech AI demo with four personas you can reach by phone.">
@@ -44,7 +45,7 @@
               </a>
               <a class="number-link" href="tel:+12675738471">(267) 573-8471<span>The public demo number</span></a>
             </div>
-            <div class="hero-note"><span aria-hidden="true">◷</span> Up to 5 minutes <span class="note-divider">/</span> Four personas to explore</div>
+            <div class="hero-note"><svg class="detail-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 6v6l4 2"></path></svg> Up to 5 minutes <span class="note-divider">/</span> Four personas to explore</div>
             <label class="motion-control"><input id="pause-motion" type="checkbox"> Pause animations</label>
           </div>
 
@@ -67,8 +68,8 @@
                 <path d="M230 55v10"></path><path d="M242 58v4"></path>
               </svg>
             </div>
-            <div class="floating-note note-hello"><span class="mini-wave" aria-hidden="true">ıIı</span> Interrupt anytime</div>
-            <div class="floating-note note-response"><span class="sparkle" aria-hidden="true">✦</span> Responds by voice</div>
+            <div class="floating-note note-hello"><svg class="detail-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6m5-10v14m6-17v20m5-13v6"></path></svg> Interrupt anytime</div>
+            <div class="floating-note note-response"><svg class="detail-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 3 7 7 3-7 3-3 7-3-7-7-3 7-3Z"></path></svg> Responds by voice</div>
             <div class="art-caption"><span class="caption-line"></span> TWO-WAY AUDIO <span class="caption-line"></span></div>
           </div>
         </div>
@@ -147,9 +148,9 @@
           </div>
           <div class="architecture-meta"><span><span aria-hidden="true">↳</span> BACKED BY <strong>DynamoDB</strong> + <strong>CloudWatch</strong></span><a href="https://github.com/mattmuldoon48/realtime-voice-agent/blob/main/docs/architecture.md" target="_blank" rel="noreferrer">Explore the architecture <span aria-hidden="true">↗</span></a></div>
           <div class="engineering-grid" id="engineering">
-            <article><span class="feature-mark" aria-hidden="true">↔</span><h3>Handling interruptions</h3><p>Audio flows in both directions, and the runtime clears queued playback when you interrupt the agent.</p></article>
-            <article><span class="feature-mark" aria-hidden="true">⌁</span><h3>Per-call isolation</h3><p>Each call owns its session, bounded queues, and cleanup so one conversation doesn’t block another.</p></article>
-            <article><span class="feature-mark" aria-hidden="true">⊞</span><h3>Safeguards for a public demo</h3><p>Requests are authenticated before admission checks apply caller and capacity limits, with calls capped at five minutes.</p></article>
+            <article><svg class="feature-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h18m-4-4 4 4-4 4M21 16H3m4-4-4 4 4 4"></path></svg><h3>Handling interruptions</h3><p>Audio flows in both directions, and the runtime clears queued playback when you interrupt the agent.</p></article>
+            <article><svg class="feature-mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><path d="M14 6h4v4M6 14v4h4"></path></svg><h3>Per-call isolation</h3><p>Each call owns its session, bounded queues, and cleanup so one conversation doesn’t block another.</p></article>
+            <article><svg class="feature-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Z"></path><path d="m8 12 3 3 5-6"></path></svg><h3>Safeguards for a public demo</h3><p>Requests are authenticated before admission checks apply caller and capacity limits, with calls capped at five minutes.</p></article>
           </div>
           <div class="stack-line" id="stack"><span>THE STACK</span><p>Python <b>·</b> FastAPI <b>·</b> Twilio <b>·</b> Amazon Bedrock <b>·</b> DynamoDB <b>·</b> CloudWatch <b>·</b> ECS / Fargate <b>·</b> AWS CDK</p></div>
         </div>

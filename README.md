@@ -4,6 +4,8 @@ A production-minded Python service that connects a live Twilio phone call to Ama
 
 **Live project page:** [mattmuldoon48.github.io/realtime-voice-agent](https://mattmuldoon48.github.io/realtime-voice-agent/)
 
+The dependency-free landing page lives in `site/` and deploys to GitHub Pages when site changes are pushed to `main`. Its CSS animations illustrate audio flow rather than live call activity; visitors can pause them with the “Pause animations” checkbox, and reduced-motion preferences disable them automatically.
+
 ## What it demonstrates
 
 - **Real-time bidirectional audio:** Twilio G.711 μ-law at 8 kHz ↔ Nova PCM16LE at 16/24 kHz.
